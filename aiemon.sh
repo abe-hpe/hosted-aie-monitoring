@@ -87,8 +87,8 @@ if [ $KUBEAPI_NOW == "UP" ];then
   #Check 4: see if any resource requests exceeds 90%
   check_kubernetes_resources
   #send alert if there was a state change
-  if [ $KUBERESOURCES__NOW != $KUBERESOURCES_PREV ]; then
-    sparkpostmail "$CLUSTERNAME Kubernetes Resources $KUBERESOURCES__NOW" "$CLUSTERNAME ALERT $now: Kubernetes resource requests on one or more nodes have changed from $KUBERESOURCES_PREV to $KUBERESOURCES_NOW"
+  if [ $KUBERESOURCES_NOW != $KUBERESOURCES_PREV ]; then
+    sparkpostmail "$CLUSTERNAME Kubernetes Resources $KUBERESOURCES_NOW" "$CLUSTERNAME ALERT $now: Kubernetes resource requests on one or more nodes have changed from $KUBERESOURCES_PREV to $KUBERESOURCES_NOW"
   fi
   
 fi
