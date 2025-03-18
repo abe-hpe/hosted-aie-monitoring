@@ -4,12 +4,22 @@
         "address": {
           "email": "abraham.sharp@hpe.com"
         }
+      },
+      {
+        "address": {
+          "email": "andrew.conner@hpe.com"
+        }
+      },
+      {
+        "address": {
+          "email": "jeannine.walter@hpe.com"
+        }
       }
     ],
     "content": {
       "from": {
         "email": "info@alertplane.io",
-        "name": "PCAI Hosted Trial Monitoring"
+        "name": "PCAI Hosted Trial Monitor"
       },
       "subject": "##SUBJECT##",
       "text": "##BODY##"
