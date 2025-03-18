@@ -9,7 +9,7 @@
     "content": {
       "from": {
         "email": "info@alertplane.io",
-        "name": "PCAI Hosted Trial Monitor"
+        "name": "PCAI Hosted Trial Monitoring"
       },
       "subject": "##SUBJECT##",
       "text": "##BODY##"
