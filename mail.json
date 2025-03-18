@@ -18,7 +18,7 @@
     ],
     "content": {
       "from": {
-        "email": "info@alertplane.io",
+        "email": "alerts@datadoc.info",
         "name": "PCAI Hosted Trial Monitor"
       },
       "subject": "##SUBJECT##",
