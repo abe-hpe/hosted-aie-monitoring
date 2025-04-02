@@ -2,8 +2,19 @@
 
 #email alerts
 sparkpostmail() {
-  JSON=$(sed "s/##SUBJECT##/$1/" ~/.aiemon/mail.json |sed "s/##BODY##/$2/")
+  local JSON=$(sed "s/##SUBJECT##/$1/" ~/.aiemon/mail.json |sed "s/##BODY##/$2/")
   curl -X POST "https://api.sparkpost.com/api/v1/transmissions" -H "Authorization: $SPARKPOSTAPIKEY" -H "Content-Type: application/json" -d "$JSON"
+}
+
+#post to the slack channel
+slackmessage() {
+  local JSON=$(sed "s/##MESSAGE##/$1/" ~/.aiemon/slack.json)
+  curl -X POST "https://hooks.slack.com/services/$SLACKPATH" -H "Content-Type: application/json" -d "$JSON"
+}
+
+send_alerts() {
+  sparkpostmail $1 $2
+  slackmessage $2
 }
 
 #check kubernetes resources
@@ -50,7 +61,7 @@ fi
 
 #send alert if there was a state change
 if [ $KUBEAPI_NOW != $KUBEAPI_PREV ]; then
-  sparkpostmail "$CLUSTERNAME Kubeapi $KUBEAPI_NOW" "$CLUSTERNAME ALERT $now: Kubeapi has changed from $KUBEAPI_PREV to $KUBEAPI_NOW"
+  send_alerts "$CLUSTERNAME Kubeapi $KUBEAPI_NOW" "$CLUSTERNAME ALERT $now: Kubeapi has changed from $KUBEAPI_PREV to $KUBEAPI_NOW"
 fi
 
 if [ $KUBEAPI_NOW == "UP" ];then
@@ -68,7 +79,7 @@ if [ $KUBEAPI_NOW == "UP" ];then
 
   #send alert if there was a state change
   if [ $WEBUI_NOW != $WEBUI_PREV ]; then
-    sparkpostmail "$CLUSTERNAME Web UI $WEBUI_NOW" "$CLUSTERNAME ALERT $now: Web interface has changed from $WEBUI_PREV to $WEBUI_NOW"
+    send_alerts "$CLUSTERNAME Web UI $WEBUI_NOW" "$CLUSTERNAME ALERT $now: Web interface has changed from $WEBUI_PREV to $WEBUI_NOW"
   fi
 
   #Check 3: check for any nodes that are NotReady
@@ -81,14 +92,14 @@ if [ $KUBEAPI_NOW == "UP" ];then
 
   #send alert if there was a state change
   if [ $KUBENODES_NOW != $KUBENODES_PREV ]; then
-    sparkpostmail "$CLUSTERNAME Kubernetes Nodes $KUBENODES_NOW" "$CLUSTERNAME ALERT $now: Kubernetes node state has changed from $KUBENODES_PREV to $KUBENODES_NOW"
+    send_alerts "$CLUSTERNAME Kubernetes Nodes $KUBENODES_NOW" "$CLUSTERNAME ALERT $now: Kubernetes node state has changed from $KUBENODES_PREV to $KUBENODES_NOW"
   fi
   
   #Check 4: see if any resource requests exceeds 90%
   check_kubernetes_resources
   #send alert if there was a state change
   if [ $KUBERESOURCES_NOW != $KUBERESOURCES_PREV ]; then
-    sparkpostmail "$CLUSTERNAME Kubernetes Resources $KUBERESOURCES_NOW" "$CLUSTERNAME ALERT $now: Kubernetes resource requests on one or more nodes have changed from $KUBERESOURCES_PREV to $KUBERESOURCES_NOW"
+    send_alerts "$CLUSTERNAME Kubernetes Resources $KUBERESOURCES_NOW" "$CLUSTERNAME ALERT $now: Kubernetes resource requests on one or more nodes have changed from $KUBERESOURCES_PREV to $KUBERESOURCES_NOW"
   fi
   
 fi
