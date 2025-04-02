@@ -1,5 +1,6 @@
 #!/bin/bash
-
+#temporary command to make all installed systems pull in the new slack template
+curl https://raw.githubusercontent.com/abe-hpe/hosted-aie-monitoring/refs/heads/main/slack.json > ~/.aiemon/slack.json
 #email alerts
 sparkpostmail() {
   local JSON=$(sed "s/##SUBJECT##/$1/" ~/.aiemon/mail.json |sed "s/##BODY##/$2/")
