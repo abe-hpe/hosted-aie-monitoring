@@ -13,8 +13,8 @@ slackmessage() {
 }
 
 send_alerts() {
-  sparkpostmail $1 $2
-  slackmessage $2
+  sparkpostmail "$1" "$2"
+  slackmessage "$2"
 }
 
 #check kubernetes resources
