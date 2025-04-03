@@ -1,8 +1,4 @@
 #!/bin/bash
-#temporary command to make all installed systems pull in the new slack template and update the updater file
-curl https://raw.githubusercontent.com/abe-hpe/hosted-aie-monitoring/refs/heads/main/slack.json > ~/.aiemon/slack.json
-curl https://raw.githubusercontent.com/abe-hpe/hosted-aie-monitoring/refs/heads/main/update-and-run.sh > ~/.aiemon/update-and-run.sh
-chmod 775 ~/.aiemon/update-and-run.sh
 
 #email alerts
 sparkpostmail() {
